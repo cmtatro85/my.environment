@@ -1,4 +1,4 @@
-" File: taglist.vim
+ " File: taglist.vim
 " Author: Yegappan Lakshmanan (yegappan AT yahoo DOT com)
 " Version: 4.5
 " Last Modified: September 21, 2007
