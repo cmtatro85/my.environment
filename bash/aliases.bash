@@ -1,6 +1,7 @@
 # Subversion
 alias st='svn st --ignore-externals'
 alias svnUp='svn up --ignore-externals'
+alias stnoex='st | grep -v "X"'
 
 # Git
 alias gst="git status"

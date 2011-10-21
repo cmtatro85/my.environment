@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/ctatro/my.environment'
+let g:netrw_dirhist_2='/etc'
+let g:netrw_dirhist_3='/var/www/shop.janeiredale.ca'
+let g:netrw_dirhist_4='/var/www/shop.janeiredale.com'
+let g:netrw_dirhist_5='/etc/apache2/sites-available'
+let g:netrw_dirhist_6='/home/ctatro/Desktop/windows_xp'

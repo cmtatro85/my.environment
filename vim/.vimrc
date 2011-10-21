@@ -101,6 +101,11 @@ au! BufRead,BufNewFile *.js set filetype=jquery
 au! bufread,bufnewfile *.cpp set filetype=cpp
 au! bufread,bufnewfile *.h set filetype=cpp
 
+augroup filetypedetect
+au BufNewFile,BufRead *.wiki setf Wikipedia
+au BufNewFile,BufRead *.txt setf Wikipedia
+augroup END
+
 
 "Set up taglist for php
 :silent map <F8> :TlistToggle<CR>
