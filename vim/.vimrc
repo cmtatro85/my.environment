@@ -100,6 +100,7 @@ au Filetype html,xml,xsl,php,symfony,htm source /etc/vim/scripts/closetag.vim
 au! BufRead,BufNewFile *.js set filetype=jquery
 au! bufread,bufnewfile *.cpp set filetype=cpp
 au! bufread,bufnewfile *.h set filetype=cpp
+au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
 
 augroup filetypedetect
 au BufNewFile,BufRead *.wiki setf Wikipedia

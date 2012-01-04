@@ -1,6 +1,6 @@
 [user]
   name = Christopher Tatro
-  email = ctatro@gmail.com
+  email = ctatro@janeiredale.com
 [giggle]
   main-window-maximized = true
   main-window-geometry = 467x238+0+24
@@ -17,11 +17,18 @@
   local = yellow 
   remote = green
 [color "diff"]
-  meta = yellow bold
+  meta = cyan bold
   frag = magenta bold
   old = red bold
   new = green bold
 [color "status"]
   added = green
-  changed = blue
+  changed = yellow
   untracked = red bold
+[core]
+  editor = vim
+[alias]
+  nice-log = log --graph --oneline
+  history  = log --graph --max-count=20 --pretty=\"[%ar] %h %s %an\"
+  unstage  = reset HEAD
+  restore  = reset --hard HEAD
