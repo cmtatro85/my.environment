@@ -110,8 +110,6 @@ au! FileType mysql set syntax=mysql
 au! BufNewFile,BufRead *.wiki setf Wikipedia
 au! BufNewFile,BufRead *.txt setf Wikipedia
 au! BufNewFile,BufRead *.md setf Markdown
-au! BufNewFile,BufRead *.twig setf twig
-au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
 
 :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
@@ -175,11 +173,11 @@ Plug 'https://github.com/veloce/vim-behat.git'
 " Plug 'https://github.com/Yggdroot/indentLine.git'
 
 " " Autocomplete
-Plug 'https://github.com/mattn/emmet-vim.git'
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
 Plug 'https://github.com/ervandew/supertab'
 Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
 Plug 'https://github.com/othree/csscomplete.vim.git'
+Plug 'https://github.com/mattn/emmet-vim.git'
 
 " " File Explorer and Buffers
 Plug 'https://github.com/scrooloose/nerdtree.git'
@@ -256,8 +254,10 @@ let g:tagbar_type_php = {
 let g:Powerline_symbols = 'fancy'
 
 " Emmit configurations
+:silent nmap <F12> <C-y>,
+:silent imap <F12> <C-y>,
+vmap <F12> <C-y>,
 let g:user_emmet_install_global = 0
-let g:user_emmet_leader_key='<C-Q>'
 autocmd FileType html,css,twig,htmldjango.twig EmmetInstall
 
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
