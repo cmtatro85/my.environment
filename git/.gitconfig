@@ -1,34 +1,17 @@
 [user]
-  name = Christopher Tatro
-  email = ctatro@janeiredale.com
-[giggle]
-  main-window-maximized = true
-  main-window-geometry = 467x238+0+24
-  history-view-vpane-position = 185
-  main-window-view = HistoryView
-  file-view-vpane-position = 460
-
-[color]
-  branch = auto
-  diff = auto
-  status = auto
-[color "branch"]
-  current = yellow reverse
-  local = yellow 
-  remote = green
-[color "diff"]
-  meta = cyan bold
-  frag = magenta bold
-  old = red bold
-  new = green bold
-[color "status"]
-  added = green
-  changed = yellow
-  untracked = red bold
-[core]
-  editor = vim
+	email = ctatro@janeiredale.com
+	name = Christopher Tatro
+[push]
+	default = simple
 [alias]
-  nice-log = log --graph --oneline
-  history  = log --graph --max-count=20 --pretty=\"[%ar] %h %s %an\"
-  unstage  = reset HEAD
-  restore  = reset --hard HEAD
+        nice-log = log  --pretty=format:'%Cred%h%Creset - %Cgreen (%ar) %C(bold blue) <%an> %C(yellow)%d%Creset %s%Creset %gs' --abbrev-commit --date=relative
+        history  = log --graph --max-count=20 --pretty=\"[%ar] %h %s %an\"
+        latest = ! git tag -l | sort -V | tail
+        tma = ! git latest | tail -n1
+        tmi = tag
+        tbf = tag
+        unstage  = reset HEAD
+        restore = reset --hard HEAD
+
+[core]
+	editor = vim
