@@ -92,24 +92,6 @@ set listchars=trail:#
 " Set the text width
 " set textwidth=80
 
-:silent map <F7> :NERDTreeToggle<CR>
-let g:NERDTreeHighlightCursorline = 1
-let g:NERDTreeIgnore = ['\~$', '.*\.o$']
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" SETUP FILETYPES AND SYNTAX
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
-au! bufread,bufnewfile *.cpp set filetype=cpp
-au! bufread,bufnewfile *.h set filetype=cpp
-au! bufread,bufnewfile TAGS set filetype=tags
-au! BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
-au! BufRead,BufNewFile *.sql set filetype=mysql
-au! FileType javascript set syntax=jquery
-au! FileType mysql set syntax=mysql
-au! BufNewFile,BufRead *.wiki setf Wikipedia
-au! BufNewFile,BufRead *.txt setf Wikipedia
-au! BufNewFile,BufRead *.md setf Markdown
 
 :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
@@ -197,6 +179,28 @@ Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"         Plug Configurations - Fine tuning            "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                      "
+" #### #    #  # ####   #### #### #  # ####            "
+" #  # #    #  # #      #    #  # ## # #               "
+" #### #    #  # # ##   #    #  # #### ###             "
+" #    #    #  # #  #   #    #  # # ## #               "
+" #    #### #### ####   #### #### #  # #               "
+"                                                      "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     NERDTree
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+:silent map <F7> :NERDTreeToggle<CR>
+let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeIgnore = ['\~$', '.*\.o$']
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     AirLine
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline configuration
 let g:airline_left_sep=' '
 let g:airline_right_sep=' '
@@ -239,7 +243,13 @@ function! Airline_file_encoding_bom_file_format()
     \ strlen(&ff) > 0 ? '['.&ff.']' : ''
   \)
 endfunction
+"
+" Lets set up some vars for our plugins
+let g:Powerline_symbols = 'fancy'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     CoVim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let CoVim_default_name = "ctatro"
 let CoVim_default_port = "959595"
 let g:tagbar_type_php = {
@@ -250,16 +260,24 @@ let g:tagbar_type_php = {
     \ ]
 \ }
 
-" Lets set up some vars for our plugins
-let g:Powerline_symbols = 'fancy'
 
-" Emmit configurations
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     Emmet
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :silent nmap <F12> <C-y>,
 :silent imap <F12> <C-y>,
 vmap <F12> <C-y>,
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,twig,htmldjango.twig EmmetInstall
+let g:user_emmet_settings = {
+\  'html' : {
+\      'comment_type': 'lastonly',
+\  },
+\}
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     Complete Omnifunc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
@@ -268,7 +286,9 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 "autocmd FileType c set omnifunc=ccomplete#Complete
 
-" Syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     Syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " let g:syntastic_php_checkers=['php', 'phpcs']
 " let g:syntastic_php_phpcs_args='--standard=PSR2 -n'
 " let g:syntastic_always_populate_loc_list = 1
@@ -283,7 +303,9 @@ autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
 
-"Super Tabs overwrite... Mostly cause I only want referenced files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     SuperTabs
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set pumheight=5              " so the complete menu doesn't get too big
 set completeopt=menu,longest " menu, menuone, longest and preview
 let g:SuperTabDefaultCompletionType = "context"
@@ -291,7 +313,28 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 
 :set pastetoggle=<F9>
 
-"Set up taglist for php
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     TagBar
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :silent nmap <F8> :TagbarToggle<CR>
+
+
+" Overwite file types
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" SETUP FILETYPES AND SYNTAX
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
+au! bufread,bufnewfile *.cpp set filetype=cpp
+au! bufread,bufnewfile *.h set filetype=cpp
+au! bufread,bufnewfile TAGS set filetype=tags
+au! BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+au! BufRead,BufNewFile *.sql set filetype=mysql
+au! FileType javascript set syntax=jquery
+au! FileType mysql set syntax=mysql
+au! BufNewFile,BufRead *.wiki setf Wikipedia
+au! BufNewFile,BufRead *.txt setf Wikipedia
+au! BufNewFile,BufRead *.md setf Markdown
+au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
 
 let g:feature_filetype='behat'
