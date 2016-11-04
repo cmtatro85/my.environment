@@ -91,7 +91,9 @@ set listchars=trail:#
 
 " Set the text width
 " set textwidth=80
-
+"
+autocmd BufEnter * set title
+let &titlestring="[ ".strftime("%c")." ]    ". $USER ."@". hostname() .":" ." %F"
 
 :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
