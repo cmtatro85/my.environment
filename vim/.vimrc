@@ -93,7 +93,8 @@ set listchars=trail:#
 " set textwidth=80
 "
 autocmd BufEnter * set title
-let &titlestring="[ ".strftime("%c")." ]    ". $USER ."@". hostname() .":" ." %F"
+let &titlestring=hostname()." -- %f | ". $USER ."@". hostname() .":" ." %F [ ".strftime('%c')." ]"
+
 
 :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
@@ -158,7 +159,8 @@ Plug 'https://github.com/veloce/vim-behat.git'
 
 " " Autocomplete
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
-Plug 'https://github.com/ervandew/supertab'
+"Plug 'https://github.com/ervandew/supertab'
+" Plug 'Valloric/YouCompleteMe'
 Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
 Plug 'https://github.com/othree/csscomplete.vim.git'
 Plug 'https://github.com/mattn/emmet-vim.git'
@@ -266,10 +268,11 @@ let g:tagbar_type_php = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     Emmet
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-:silent nmap <F12> <C-y>,
-:silent imap <F12> <C-y>,
-vmap <F12> <C-y>,
+:silent nmap <F12> <C-z>,
+:silent imap <F12> <C-z>,
+vmap <F12> <C-z>,
 let g:user_emmet_install_global = 0
+let g:user_emmet_leader_key='<C-Z>'
 autocmd FileType html,css,twig,htmldjango.twig EmmetInstall
 let g:user_emmet_settings = {
 \  'html' : {

@@ -57,7 +57,7 @@ case "$TERM" in (xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 esac
 
-PROMPT_COMMAND='echo -en "\033]0; [[ `date` ]]       ${USER}@${HOSTNAME}: ${PWD}\007"'
+PROMPT_COMMAND='echo -en "\033]0; ${HOSTNAME} : ${PWD} [[ `date` ]]\007"'
 
 
 # enable color support of ls and also add handy aliases
