@@ -194,6 +194,8 @@ call plug#end()
 " #    #### #### ####   #### #### #  # #               "
 "                                                      "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:used_javascript_libs = 'jquery, d3'
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     NERDTree
@@ -333,9 +335,8 @@ autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
 au! bufread,bufnewfile *.cpp set filetype=cpp
 au! bufread,bufnewfile *.h set filetype=cpp
 au! bufread,bufnewfile TAGS set filetype=tags
-au! BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+au! BufRead,BufNewFile *.js set filetype=javascript syntax=javascript
 au! BufRead,BufNewFile *.sql set filetype=mysql
-au! FileType javascript set syntax=jquery
 au! FileType mysql set syntax=mysql
 au! BufNewFile,BufRead *.wiki setf Wikipedia
 au! BufNewFile,BufRead *.txt setf Wikipedia
