@@ -24,6 +24,16 @@ set norelativenumber
 syntax sync minlines=50
 syntax sync maxlines=100
 set synmaxcol=1000
+if &term =~ "xterm\\|rxvt"
+  " use an orange cursor in insert mode
+  let &t_SI = "\<Esc>]12;orange\x7"
+  " use a red cursor otherwise
+  let &t_EI = "\<Esc>]12;red\x7"
+  silent !echo -ne "\033]12;red\007"
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\033]112\007"
+  " use \003]12;gray\007 for gnome-terminal and rxvt up to version 9.21
+endif
 
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
@@ -34,13 +44,6 @@ set synmaxcol=1000
 "if has("autocmd")
 " au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " \| exe "normal g'\"" | endif
-"endif
-
-" Uncomment the following to have Vim load indentation rules according to the
-" detected filetype. Per default Debian Vim only load filetype specific
-" plugins.
-"if has("autocmd")
-" filetype indent on
 "endif
 
 " The following are commented out as they cause vim to behave a lot
@@ -120,7 +123,7 @@ nnoremap <silent> <Space> :set foldmethod=syntax <CR> :exe 'silent! normal! za'.
 :silent nmap <C-k> :wincmd k<CR>
 :silent nmap <C-l> :wincmd l<CR>
 " create new tab
-:silent nmap <T> <C-w> t
+":silent nmap <T> <C-w> t
 
 :silent imap <C-h> <Esc>:vertical resize -30<CR>i
 :silent imap <C-j> <Esc>:resize +30<CR>i
@@ -133,10 +136,15 @@ au Filetype cpp nmap lb<Space> o//<Esc>78a=<Esc><Esc>o
 " Com'n Give me a good color :/ I guess this will do
 colorscheme desert
 
+"Sort PHP use statements
+""http://stackoverflow.com/questions/11531073/how-do-you-sort-a-range-of-lines-by-length
+vmap <Leader>su ! awk '{ print length(), $0 \| "sort -n \| cut -d\\  -f2-" }'<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" EVERYTHING AFTER THIS POINT IS THROUGH THE BUNDLE FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+filetype off
 " Infect with pathogen. Allows github control of plugins
 call plug#begin('~/.vim/plugged')
 " " Syntax and highlighting
@@ -156,12 +164,23 @@ Plug 'https://github.com/veloce/vim-behat.git'
 "
 " " Formatting
 " Plug 'https://github.com/Yggdroot/indentLine.git'
+Plug 'https://github.com/vim-scripts/SQLUtilities.git'
 
 " " Autocomplete
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
 "Plug 'https://github.com/ervandew/supertab'
 " Plug 'Valloric/YouCompleteMe'
+" Does not work correcly....
+" Plug 'lvht/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
+"
 Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'https://github.com/SirVer/UltiSnips'
+"Plug 'https://github.com/honza/vim-snippets'
+"Plug 'https://github.com/sniphpets/sniphpets'
+"Plug 'https://github.com/sniphpets/sniphpets-common'
+"Plug 'https://github.com/sniphpets/sniphpets-symfony'
+"Plug 'https://github.com/bonsaiben/bootstrap-snippets'
 Plug 'https://github.com/othree/csscomplete.vim.git'
 Plug 'https://github.com/mattn/emmet-vim.git'
 
@@ -170,6 +189,7 @@ Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/vim-scripts/qnamebuf.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
+Plug 'https://github.com/ludovicchabant/vim-gutentags.git'
 
 " " Pair Coding
 Plug 'https://github.com/FredKSchott/CoVim.git'
@@ -182,6 +202,12 @@ Plug 'tpope/vim-fugitive'
 
 
 call plug#end()
+
+" Uncomment the following to have Vim load indentation rules according to the
+" detected filetype. Per default Debian Vim only load filetype specific
+" plugins. forces autocmd from bundles
+filetype plugin indent on
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "         Plug Configurations - Fine tuning            "
@@ -313,8 +339,8 @@ autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     SuperTabs
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-set pumheight=5              " so the complete menu doesn't get too big
-set completeopt=menu,longest " menu, menuone, longest and preview
+set pumheight=15             " so the complete menu doesn't get too big
+set completeopt=menu,preview " menu, menuone, longest and preview
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 
@@ -325,6 +351,28 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 ""     TagBar
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 :silent nmap <F8> :TagbarToggle<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     SQLUtilities
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vmap <silent>sf        <Plug>SQLU_Formatter<CR>
+" nmap <silent>scl       <Plug>SQLU_CreateColumnList<CR>
+" nmap <silent>scd       <Plug>SQLU_GetColumnDef<CR>
+" nmap <silent>scdt      <Plug>SQLU_GetColumnDataType<CR>
+" nmap <silent>scp       <Plug>SQLU_CreateProcedure<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     UltiSnips
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsListSnippets='<c-tab>'
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 
 " Overwite file types

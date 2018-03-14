@@ -78,10 +78,11 @@ alias ll='ls -lF'
 alias la='ls -A'
 alias l='ls -CF'
 alias test_w_phpunit="./vendor/bin/phpunit ./tests"
-
+alias console="sudo -u www-data php7.0 bin/console"
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -100,8 +101,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 alias vim="vim -c NERDTreeToggle"
-alias git-list="git status --porcelain | cut -c4-"
-alias resume-vim="vim -p git-list"
+alias git-list="git status --porcelain --untracked-files=no | cut -c4- | tr '\n' ' '"
+alias resume-vim="vim -p -- `git-list`"
 alias lroot-mysql="mysql -u root -p --host devdb1"
 alias webroot="cd $(pwd | cut -d'/' -f -4)"
 alias putest="pushd `pwd | cut -d'/' -f -4 `; phpunit -c app vendor/imc; popd;"
@@ -109,6 +110,9 @@ alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 alias cclear="clear; tput cup 10 0"
 alias testProjFromBundle="pushd; phpunit -c app ./vendor/imc/ ;pushd"
+alias php="php -dzend_extension=xdebug.so"
+alias modown-dir="chown www-data:www-data -R .; chmod g+w -R ."
+alias edit-assets="vim -O ./app/Resources/views/base/body/scripts.html.twig ./app/Resources/views/base/head/styles.html.twig"
 
 function unpushed_check() {
     echo '' > /tmp/unpushed;
@@ -187,5 +191,13 @@ function find-grep () {
   done
 }
 
+function change-title () {
+   PROMPT_COMMAND='echo -ne "\033]0;$1 ${USER}@${HOSTNAME}: ${PWD}\007"'
+}
+
 # Source aliases.bash file from ~/my.environment/bash dir
 . ~/my.environment/bash/aliases.bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -4,14 +4,14 @@
 [push]
 	default = simple
 [alias]
-        nice-log = log  --pretty=format:'%Cred%h%Creset - %Cgreen (%ar) %C(bold blue) <%an> %C(yellow)%d%Creset %s%Creset %gs' --abbrev-commit --date=relative
-        history  = log --graph --max-count=20 --pretty=\"[%ar] %h %s %an\"
-        latest = ! git tag -l | sort -V | tail
-        tma = ! git latest | tail -n1
-        tmi = tag
-        tbf = tag
-        unstage  = reset HEAD
-        restore = reset --hard HEAD
+    nice-log = log --abbrev-commit --date=relative --pretty=format:'%C(red)%h%Creset - %C(yellow)%<(50,trunc)%s%Creset  %gs %C(dim)%<(14,trunc)%ar by %an %C(reverse bold green)%d%Creset'
+    history  = log --graph --max-count=20 --pretty=format:'%C(red)%h%Creset - %C(yellow)%s%Creset  %gs %C(dim)%ar by %an %C(reverse bold green)%d%Creset'
+    latest = ! git tag -l | sort -V | tail
+    tma = ! git latest | tail -n1
+    tmi = tag
+    tbf = tag
+    unstage  = reset HEAD
+    restore = reset --hard HEAD
 
 [core]
 	editor = vim
