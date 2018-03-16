@@ -47,18 +47,11 @@ fi
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    PS1="[\$(date '+%H:%M %Z')][\u@\h \W]\$  "
+    PS1="[\$(date '+%H:%M %Z')][\u@\h \W] \$  "
 fi
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in (xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-esac
-
 PROMPT_COMMAND='echo -en "\033]0; ${HOSTNAME} : ${PWD} [[ `date` ]]\007"'
-
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -193,6 +186,10 @@ function find-grep () {
 
 function change-title () {
    PROMPT_COMMAND='echo -ne "\033]0;$1 ${USER}@${HOSTNAME}: ${PWD}\007"'
+}
+
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
 }
 
 # Source aliases.bash file from ~/my.environment/bash dir

@@ -5,7 +5,6 @@
 " everytime an upgrade of the vim packages is performed. It is recommended to
 " make changes after sourcing debian.vim since it alters the value of the
 " 'compatible' option.
-
 " This line should not be removed as it ensures that various options are
 " properly set to work with the Vim-related packages available in Debian.
 runtime! debian.vim
@@ -19,7 +18,6 @@ runtime! debian.vim
 " line enables syntax highlighting by default.
 syntax on
 set nocursorcolumn
-set nocursorline
 set norelativenumber
 syntax sync minlines=50
 syntax sync maxlines=100
@@ -74,6 +72,10 @@ set tags=./TAGS;
 set nocompatible " Disable vi-compatibility
 set laststatus=2 " Always show the statusline
 set t_Co=256 " Explicitly tell vim that the terminal has 256 colors
+
+au BufEnter NERD_tree_* hi CursorLine cterm=BOLD ctermbg=237
+au BufLeave NERD_tree_* highlight clear CursorLine
+au BufAdd * highlight clear CursorLine
 
 " Set tabs to spaces
 set et
@@ -151,6 +153,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/othree/javascript-libraries-syntax.vim.git'
 Plug 'https://github.com/hail2u/vim-css3-syntax.git'
 Plug 'https://github.com/veloce/vim-behat.git'
+
+" " Colors
+Plug 'https://github.com/reedes/vim-colors-pencil'
+
 " Plug 'lumiliet/vim-twig'
 
 " Disabled because it was causing indent issues
@@ -164,7 +170,7 @@ Plug 'https://github.com/veloce/vim-behat.git'
 "
 " " Formatting
 " Plug 'https://github.com/Yggdroot/indentLine.git'
-Plug 'https://github.com/vim-scripts/SQLUtilities.git'
+" Plug 'https://github.com/vim-scripts/SQLUtilities.git'
 
 " " Autocomplete
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
@@ -174,6 +180,9 @@ Plug 'https://github.com/vim-scripts/closetag.vim.git'
 " Plug 'lvht/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 "
 Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
+Plug 'https://github.com/ludovicchabant/vim-gutentags.git'
+Plug 'arnaud-lb/vim-php-namespace'
+
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'https://github.com/SirVer/UltiSnips'
 "Plug 'https://github.com/honza/vim-snippets'
@@ -189,7 +198,6 @@ Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/vim-scripts/qnamebuf.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
-Plug 'https://github.com/ludovicchabant/vim-gutentags.git'
 
 " " Pair Coding
 Plug 'https://github.com/FredKSchott/CoVim.git'
@@ -229,6 +237,14 @@ let g:used_javascript_libs = 'jquery, d3'
 :silent map <F7> :NERDTreeToggle<CR>
 let g:NERDTreeHighlightCursorline = 1
 let g:NERDTreeIgnore = ['\~$', '.*\.o$']
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     Gutentags
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gutentags_ctags_exclude = ['*.css', '*.htm*', '*.js', '*.json', '*.xml','*.phar', '*.ini', '*.rst', '*.md',
+                            \ '*vendor/*/test*', '*vendor/*/Test*',
+                            \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
+                            \ '*var/cache*', '*var/log*']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     AirLine
@@ -278,6 +294,12 @@ endfunction
 "
 " Lets set up some vars for our plugins
 let g:Powerline_symbols = 'fancy'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     Pencil Theme
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set spell spelllang=en_us
+" let g:airline_theme = 'pencil'
+" let g:pencil_gutter_color = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     CoVim
@@ -392,3 +414,6 @@ au! BufNewFile,BufRead *.md setf Markdown
 au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
 
 let g:feature_filetype='behat'
+
+hi LineTooLong cterm=bold ctermbg=red
+match LineTooLong /\%>80v.\+/
