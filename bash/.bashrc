@@ -184,6 +184,11 @@ function find-grep () {
   done
 }
 
+function fixSinceComment() {
+    find ./src/ -name "*.php" -type f -exec sed -i "s/since  #.#.#/since  $1/g" {} +
+    find ./tests/ -name "*.php" -type f -exec sed -i "s/since  #.#.#/since  $1/g" {} +
+}
+
 function change-title () {
    PROMPT_COMMAND='echo -ne "\033]0;$1 ${USER}@${HOSTNAME}: ${PWD}\007"'
 }

@@ -297,7 +297,6 @@ let g:Powerline_symbols = 'fancy'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     Pencil Theme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-set spell spelllang=en_us
 " let g:airline_theme = 'pencil'
 " let g:pencil_gutter_color = 1
 
@@ -412,6 +411,11 @@ au! BufNewFile,BufRead *.wiki setf Wikipedia
 au! BufNewFile,BufRead *.txt setf Wikipedia
 au! BufNewFile,BufRead *.md setf Markdown
 au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Spelling
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au FileType twig,html,php,xml,xsl,javascript,wikipedia,mysql,htmldjango.twig set spell spelllang=en_us
 
 let g:feature_filetype='behat'
 
