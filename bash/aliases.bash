@@ -21,4 +21,9 @@ ENDGREEN="\e[0m"
 #export PS1="$STARTCOLOR\u@\h \w> $ENDCOLOR"
 #export PS1="[\$(date '+%Y-%M-%d %H:%M %Z')][$STARTGREEN\u$ENDGREEN@$STARTBLUE\h$ENDBLUE \W]\$ "
 export PS1="[\$(date '+%Y-%M-%d %H:%M %Z')][\u@\h \W]\$ "
-export PS1="\e[1;34m[\$(date '+%m-%d') \e[1;35m\$(date '+%H:%M %Z')\e[1;34m] \u@\h \e[0;96m\W\e[0m\e[93m\$(parse_git_branch)►\e[0m "
+export PS1="\
+\[\e[1;34m\]\
+[\
+\$(date '+%m-%d') \[\e[1;35m\]\$(date '+%H:%M %Z')\[\e[1;34m\]\
+]\
+ \u@\h \[\e[0;96m\]\W\[\e[93m\]\$(parse_git_branch)►\[\e[0m\] "

@@ -193,7 +193,7 @@ function change-title () {
    PROMPT_COMMAND='echo -ne "\033]0;$1 ${USER}@${HOSTNAME}: ${PWD}\007"'
 }
 
-parse_git_branch() {
+function parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
 }
 
