@@ -53,6 +53,13 @@ unset color_prompt force_color_prompt
 
 PROMPT_COMMAND='echo -en "\033]0; ${HOSTNAME} : ${PWD} [[ `date` ]]\007"'
 
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -66,139 +73,31 @@ if [ -x /usr/bin/dircolors ]; then
     alias gtags="git tags -l | sort -V"
 fi
 
-# some more ls aliases
-alias ll='ls -lF'
-alias la='ls -A'
-alias l='ls -CF'
-alias test_w_phpunit="./vendor/bin/phpunit ./tests"
-alias console="sudo -u www-data php7.0 bin/console"
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+# some more ls aliases
+alias ll='ls -lF'
+alias la='ls -A'
+alias l='ls -CF'
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
+# Source aliases.bash file from ~/my.environment/bash dir
+if [ -f ~/my.environment/bash/aliases.bash ]; then
+    . ~/my.environment/bash/aliases.bash
 fi
 
-alias vim="vim -c NERDTreeToggle"
-alias git-list="git status --porcelain --untracked-files=no | cut -c4- | tr '\n' ' '"
-alias resume-vim="vim -p -- `git-list`"
-alias lroot-mysql="mysql -u root -p --host devdb1"
-alias webroot="cd $(pwd | cut -d'/' -f -4)"
-alias putest="pushd `pwd | cut -d'/' -f -4 `; phpunit -c app vendor/imc; popd;"
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
-alias cclear="clear; tput cup 10 0"
-alias testProjFromBundle="pushd; phpunit -c app ./vendor/imc/ ;pushd"
-alias php="php -dzend_extension=xdebug.so"
-alias modown-dir="chown www-data:www-data -R .; chmod g+w -R ."
-alias edit-assets="vim -O ./app/Resources/views/base/body/scripts.html.twig ./app/Resources/views/base/head/styles.html.twig"
-
-function unpushed_check() {
-    echo '' > /tmp/unpushed;
-    for file in $(ls -1); do
-        conformed=$(sed -e 's/\(^\w\|-\w\)/-\U\1/g' -e 's/^-//' <<< $file | sed -e 's/--//g');
-        lfile=$file/IMC/$conformed
-        echo `find ./ -mindepth 3 -maxdepth 3 -iname "$conformed" -type d` >> /tmp/unpushed;
-        echo ----------------------------------- >> /tmp/unpushed;
-        p2Dir $lfile;
-        if [ -n "$2" ] && [ $2 == 1 ]; then
-          git remote update >> /dev/null;
-        fi;
-        git status >> /tmp/unpushed;
-        echo "" >> /tmp/unpushed;
-        echo "" >> /tmp/unpushed;
-        popd >> /dev/null;
-    done;
-
-    if [ -n "$1" ] && [ $1 ==  1 ]; then
-      cat /tmp/unpushed;
-    else
-      cat /tmp/unpushed | less
-    fi;
-    rm /tmp/unpushed;
-}
-
-function p2Dir() {
-  files=( `find ./ -iregex ".*$1[a-zA-Z\-\_]*$" -type d`);
-  count=${#files[@]}
-
-  if [ $count == '0' ]; then
-      echo no files found;
-      return 1;
-  fi;
-
-  if [ $count == '1' ]; then
-      pushd $files >> /dev/null;
-      return 0;
-  fi;
-
-  echo "Lots oh files found:"
-  for item in ${files[*]}
-  do
-      printf "   %s\n" $item
-  done
-}
-
-function find-grep () {
- local FGRED=`echo "\033[31m"`
- local FGCYAN=`echo "\033[36m"`
- local BGRED=`echo "\033[41m"`
- local FGBLUE=`echo "\033[35m"`
- local NORMAL=`echo "\033[m"`
-
- # whether or not to only return defined functions
- local bool="$3"
-
- local files=( $(find ./ -type f -regex ".*$1.*" ) )
-  if [[ $bool ]]
-    then
-      local search="public function $2"
-  else
-    local search=$2
-  fi
-
-  for ((i=0; i < ${#files[*]} ; i++))
-  do
-    declare rows=$(grep -in "$search" ${files[$i]})
-    if [[ "$rows" ]]
-      then
-      echo "";
-      echo ${files[$i]}
-      grep -in "$search" ${files[$i]}
-    fi
-
-  done
-}
-
-function fixSinceComment() {
-    find ./src/ -name "*.php" -type f -exec sed -i "s/since  #.#.#/since  $1/g" {} +
-    find ./tests/ -name "*.php" -type f -exec sed -i "s/since  #.#.#/since  $1/g" {} +
-}
-
-function change-title () {
-   PROMPT_COMMAND='echo -ne "\033]0;$1 ${USER}@${HOSTNAME}: ${PWD}\007"'
-}
-
-function parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
-}
-
-# Source aliases.bash file from ~/my.environment/bash dir
-. ~/my.environment/bash/aliases.bash
+if [ -f ~/my.environment/bash/functions.bash ]; then
+    . ~/my.environment/bash/functions.bash
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

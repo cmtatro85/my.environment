@@ -5,13 +5,29 @@ alias stnoex='st | grep -v "X"'
 # Git
 alias gst="git status"
 alias gru="git remote update"
+alias git-list="git status --porcelain --untracked-files=no | cut -c4- | tr '\n' ' '"
 
-alias ebash="sudo vim ~/.bashrc"
-alias evim="sudo vim /etc/vimrc"
-alias composer="php5 /usr/local/bin/composer"
+# VIM
+alias resume-vim="vim -p -- $(git-list)"
+alias vim="vim -c NERDTreeToggle"
+alias evim="sudo vim -O /etc/vimrc ~/.vimrc"
+
+# PHP
+alias php="php -dzend_extension=xdebug.so"
+alias console="sudo -u www-data php bin/console"
 alias composer5.5="php5 /usr/local/bin/composer"
 alias composer7.0="php7.0 /usr/local/bin/composer"
 alias composer7.1="php7.1 /usr/local/bin/composer"
+
+alias ebash="sudo vim -O ~/.bashrc ~/my.environment/bash/aliases.bash ~/my.environment/bash/functions.bash"
+
+# Dirs
+alias webroot="cd $(pwd | cut -d'/' -f -4)"
+alias modown-dir="sudo chown www-data:www-data -R .; sudo chmod g+w -R ."
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
 
 # [2011-05-13 17:05 EDT][tom@tom-laptop my.environment]$
 STARTBLUE='\e[0;34m';
