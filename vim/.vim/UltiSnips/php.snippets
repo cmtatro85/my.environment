@@ -103,17 +103,19 @@ endsnippet
 
 snippet pub "Public function" b
 /**
- * ${3:undocumented function}
+ * ${1:${VISUAL}}
  *
- * @param ${5:string} $$2
+ * @author Christopher Tatro <ctatro@janeiredale.com>
+ * @since  ${12:#.#.#} (${13:`date +%Y-%m-%d`})
  *
- * @return ${4:void}
+ * @param ${2:string} $${3:${2/\w+/\l$0/}}
+ *
+ * @return ${4:`!p snip.rv=snip.basename`}
  */
-public function ${1:name}(${2:$param})
+public function ${5:`!p snip.rv = mixedCase(re.sub(r"\s", "", ''.join(word[0].upper() + word[1:] for word in t[1].split())))`}($2 $$3): $4
 {
-    ${VISUAL}${5:return null;}
+    ${0:return $this;}
 }
-$0
 endsnippet
 
 snippet gsst "Simple test for getter and setters" bm
@@ -133,6 +135,12 @@ public function test${12:`!p snip.rv = (re.sub(r"\s", "", ''.join(word[0].upper(
 }
 endsnippet
 
+snippet '' "quote string" mb
+'${1:some value}'
+endsnippet
+snippet ''' "Auto expand array key" mb
+'${1:some value}' => ${2},
+endsnippet
 snippet '''' "Auto expand array row" mb
 '${1:some value}' => '${2:$1}',
 endsnippet

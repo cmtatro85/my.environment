@@ -73,10 +73,6 @@ set nocompatible " Disable vi-compatibility
 set laststatus=2 " Always show the statusline
 set t_Co=256 " Explicitly tell vim that the terminal has 256 colors
 
-au BufEnter NERD_tree_* hi CursorLine cterm=BOLD ctermbg=237
-au BufLeave NERD_tree_* highlight clear CursorLine
-au BufAdd * highlight clear CursorLine
-
 " Set tabs to spaces
 set et
 set sw=4
@@ -91,17 +87,23 @@ let yml_folding = 0
 let b:unaryTagsStack = 1
 
 " Show trailing spaces
+set listchars=trail:#,eol:¬
+set ffs=unix
+set encoding=utf-8
+set fileencoding=utf-8
 set list
-set listchars=trail:#
 
 " Set the text width
 " set textwidth=80
 "
 autocmd BufEnter * set title
 let &titlestring=hostname()." -- %f | ". $USER ."@". hostname() .":" ." %F [ ".strftime('%c')." ]"
+let php_syntax_extensions_enabled=["date", "json"]
+let html_load=0
+let php_sql_query=0
 
 
-:au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
+" :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""LETS SETUP SOME MAPPINGS
@@ -127,16 +129,33 @@ nnoremap <silent> <Space> :set foldmethod=syntax <CR> :exe 'silent! normal! za'.
 " create new tab
 ":silent nmap <T> <C-w> t
 
-:silent imap <C-h> <Esc>:vertical resize -30<CR>i
-:silent imap <C-j> <Esc>:resize +30<CR>i
-:silent imap <C-k> <Esc>:resize -30<CR>i
-:silent imap <C-l> <Esc>:vertical resize +30<CR>i
+:silent imap <C-h> <Esc>:vertical resize -30<CR>a
+:silent imap <C-j> <Esc>:resize +30<CR>a
+:silent imap <C-k> <Esc>:resize -30<CR>a
+:silent imap <C-l> <Esc>:vertical resize +30<CR>a
+
+" :silent inoremap <C-x> <Esc>:syntax off<CR>a<C-x>
+" :silent imap <C-a> <Esc>:syntax on<CR>a
 
 "CPP //= line breaks
 au Filetype cpp nmap lb<Space> o//<Esc>78a=<Esc><Esc>o
 
 " Com'n Give me a good color :/ I guess this will do
 colorscheme desert
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" COLORS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufEnter NERD_tree_* hi CursorLine cterm=BOLD ctermbg=237
+au BufLeave NERD_tree_* highlight clear CursorLine
+au BufAdd * highlight clear CursorLine
+" Let's change some colors and add some syntax highlighting
+"" Let's set up lines over 80 to be highlighted in a different color bg
+hi LineTooLong cterm=bold ctermbg=237
+match LineTooLong /\%>80v.\+/
+
+"" Change non text lines to a lighter color
+hi NonText ctermfg=237 gui=bold guifg=237 guibg=grey30
 
 "Sort PHP use statements
 ""http://stackoverflow.com/questions/11531073/how-do-you-sort-a-range-of-lines-by-length
@@ -150,9 +169,10 @@ filetype off
 " Infect with pathogen. Allows github control of plugins
 call plug#begin('~/.vim/plugged')
 " " Syntax and highlighting
-Plug 'https://github.com/othree/javascript-libraries-syntax.vim.git'
-Plug 'https://github.com/hail2u/vim-css3-syntax.git'
-Plug 'https://github.com/veloce/vim-behat.git'
+" Plug 'https://github.com/sheerun/vim-polyglot'
+" Plug 'https://github.com/othree/javascript-libraries-syntax.vim.git'
+" Plug 'https://github.com/hail2u/vim-css3-syntax.git'
+" Plug 'https://github.com/veloce/vim-behat.git'
 
 " " Colors
 Plug 'https://github.com/reedes/vim-colors-pencil'
@@ -174,33 +194,35 @@ Plug 'https://github.com/reedes/vim-colors-pencil'
 
 " " Autocomplete
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
-"Plug 'https://github.com/ervandew/supertab'
+" Plug 'https://github.com/ervandew/supertab'
 " Plug 'Valloric/YouCompleteMe'
 " Does not work correcly....
 " Plug 'lvht/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 "
-Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
+" Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
 Plug 'https://github.com/ludovicchabant/vim-gutentags.git'
 Plug 'arnaud-lb/vim-php-namespace'
+Plug 'https://github.com/mbbill/echofunc'
+Plug 'https://github.com/dhruvasagar/vim-table-mode'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'https://github.com/SirVer/UltiSnips'
-"Plug 'https://github.com/honza/vim-snippets'
-"Plug 'https://github.com/sniphpets/sniphpets'
-"Plug 'https://github.com/sniphpets/sniphpets-common'
-"Plug 'https://github.com/sniphpets/sniphpets-symfony'
-"Plug 'https://github.com/bonsaiben/bootstrap-snippets'
-Plug 'https://github.com/othree/csscomplete.vim.git'
+" Plug 'https://github.com/honza/vim-snippets'
+" Plug 'https://github.com/sniphpets/sniphpets'
+" Plug 'https://github.com/sniphpets/sniphpets-common'
+" Plug 'https://github.com/sniphpets/sniphpets-symfony'
+" Plug 'https://github.com/bonsaiben/bootstrap-snippets'
+" Plug 'https://github.com/othree/csscomplete.vim.git'
 Plug 'https://github.com/mattn/emmet-vim.git'
 
 " " File Explorer and Buffers
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/vim-scripts/qnamebuf.git'
-Plug 'https://github.com/majutsushi/tagbar.git'
+" Plug 'https://github.com/majutsushi/tagbar.git'
 
 " " Pair Coding
-Plug 'https://github.com/FredKSchott/CoVim.git'
+" Plug 'https://github.com/FredKSchott/CoVim.git'
 
 " " Status Line
 Plug 'vim-airline/vim-airline'
@@ -330,14 +352,20 @@ let g:user_emmet_settings = {
 \}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+""     EchoFunc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:EchoFuncKeyNext='<C-j>'
+let g:EchoFuncKeyPrev='<C-k>'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     Complete Omnifunc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+" autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 "autocmd FileType c set omnifunc=ccomplete#Complete
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -360,8 +388,8 @@ autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     SuperTabs
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-set pumheight=15             " so the complete menu doesn't get too big
-set completeopt=menu,preview " menu, menuone, longest and preview
+set pumheight=30             " so the complete menu doesn't get too big
+set completeopt=menu,longest " menu, menuone, longest and preview
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 
@@ -415,9 +443,9 @@ au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Spelling
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-au FileType twig,html,php,xml,xsl,javascript,wikipedia,mysql,htmldjango.twig set spell spelllang=en_us
+set nospell
+au FileType twig,html,php,javascript,wikipedia,mysql,htmldjango.twig setlocal spell spelllang=en_us
 
 let g:feature_filetype='behat'
 
-hi LineTooLong cterm=bold ctermbg=red
-match LineTooLong /\%>80v.\+/
+au FileType cucumber setlocal et sw=2 sts
