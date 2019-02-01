@@ -102,3 +102,14 @@ function change-title () {
 function parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /'
 }
+
+function prettier-my-js () {
+    FILES=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.jsx" | sed 's| |\\ |g')
+    [ -z "$FILES" ] && echo 'no files found' && return 2
+
+    # Prettify all selected files
+    docker run -it --rm -v `pwd`:/home/node/app -w /home/node/app node:8.15-alpine ./node_modules/.bin/prettier --write $FILES
+    unset FILES
+
+    return 1
+}

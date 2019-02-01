@@ -43,3 +43,31 @@ export PS1="\
 \$(date '+%m-%d') \[\e[1;35m\]\$(date '+%H:%M %Z')\[\e[1;34m\]\
 ]\
  \u@\h \[\e[0;96m\]\W\[\e[93m\]\$(parse_git_branch)►\[\e[0m\] "
+
+alias php='\
+    docker run --rm --interactive --tty \
+        --volume $PWD:/app \
+        --user $(id -u):$(id -g) \
+        --volume /etc/passwd:/etc/passwd:ro \
+        --volume /etc/group:/etc/group:ro \
+        php:7.2 php \
+'
+alias composer='\
+    docker run --rm --interactive --tty \
+        --memory="4g" \
+        --memory-swap="1g" \
+        --volume $PWD:/app \
+        --volume $COMPOSER_HOME:/tmp \
+        --volume /tmp/cache/composer:/tmp/cache \
+        --volume ~/.ssh:/root/.ssh \
+        composer /usr/local/bin/php -d memory_limit=-1 /usr/bin/composer   \
+'
+alias npm='\
+    docker run -it --rm \
+        --volume `pwd`:/home/node/app \
+        -w /home/node/app \
+        node:8.15-alpine npm \
+'
+#        --user $(id -u):$(id -g) \
+#        --volume /etc/passwd:/etc/passwd:ro \
+#        --volume /etc/group:/etc/group:ro \
