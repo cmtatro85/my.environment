@@ -87,7 +87,8 @@ let yml_folding = 0
 let b:unaryTagsStack = 1
 
 " Show trailing spaces
-set listchars=trail:#,eol:¬
+" set listchars=trail:#,eol:¬
+set listchars=trail:#
 set ffs=unix
 set encoding=utf-8
 set fileencoding=utf-8
@@ -103,7 +104,7 @@ let html_load=0
 let php_sql_query=0
 
 
-" :au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
+:au Filetype twig,html,xml,xsl,php source ~/.vim/plugged/closetag.vim/plugin/closetag.vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""LETS SETUP SOME MAPPINGS
@@ -191,6 +192,7 @@ Plug 'https://github.com/reedes/vim-colors-pencil'
 " " Formatting
 " Plug 'https://github.com/Yggdroot/indentLine.git'
 " Plug 'https://github.com/vim-scripts/SQLUtilities.git'
+Plug 'https://github.com/kylef/apiblueprint.vim'
 
 " " Autocomplete
 Plug 'https://github.com/vim-scripts/closetag.vim.git'
@@ -200,6 +202,7 @@ Plug 'https://github.com/vim-scripts/closetag.vim.git'
 " Plug 'lvht/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 "
 " Plug 'https://github.com/shawncplus/phpcomplete.vim.git'
+Plug 'https://github.com/phpactor/phpactor', {'for': 'php', 'do': 'composer install'}
 Plug 'https://github.com/ludovicchabant/vim-gutentags.git'
 Plug 'arnaud-lb/vim-php-namespace'
 Plug 'https://github.com/mbbill/echofunc'
@@ -219,7 +222,7 @@ Plug 'https://github.com/mattn/emmet-vim.git'
 Plug 'https://github.com/scrooloose/nerdtree.git'
 Plug 'https://github.com/Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/vim-scripts/qnamebuf.git'
-" Plug 'https://github.com/majutsushi/tagbar.git'
+Plug 'https://github.com/majutsushi/tagbar.git'
 
 " " Pair Coding
 " Plug 'https://github.com/FredKSchott/CoVim.git'
@@ -360,13 +363,14 @@ let g:EchoFuncKeyPrev='<C-k>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     Complete Omnifunc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
-"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType python set omnifunc=pythoncomplete#Complete
+" autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 " autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
-"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 " autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-"autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType php setlocal omnifunc=phpactor#Complete
+" autocmd FileType c set omnifunc=ccomplete#Complete
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""     Syntastic
@@ -449,3 +453,40 @@ au FileType twig,html,php,javascript,wikipedia,mysql,htmldjango.twig setlocal sp
 let g:feature_filetype='behat'
 
 au FileType cucumber setlocal et sw=2 sts
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" PhpActor
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:phpactorPhpBin = 'php'
+let g:phpactorOmniAutoClassImport = v:true
+
+" Include use statement
+nmap <Leader>u :call phpactor#UseAdd()<CR>
+
+" Invoke the context menu
+nmap <Leader>mm :call phpactor#ContextMenu()<CR>
+
+" Invoke the navigation menu
+nmap <Leader>nn :call phpactor#Navigate()<CR>
+
+" Goto definition of class or class member under the cursor
+nmap <Leader>o :call phpactor#GotoDefinition()<CR>
+
+" Show brief information about the symbol under the cursor
+nmap <Leader>K :call phpactor#Hover()<CR>
+
+" Transform the classes in the current file
+nmap <Leader>tt :call phpactor#Transform()<CR>
+
+" Generate a new class (replacing the current file)
+nmap <Leader>cc :call phpactor#ClassNew()<CR>
+
+" Extract expression (normal mode)
+nmap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
+
+" Extract expression from selection
+vmap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
+
+" Extract method from selection
+vmap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
+

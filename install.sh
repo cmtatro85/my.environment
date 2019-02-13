@@ -76,3 +76,18 @@ fi
 echo
 echo "All done!"
 echo
+
+# Set up tmux
+TMUXCONFIG=".tmux.conf"
+TARGET_TMUXCONFIG="$HOME/$MY_ENV/tmux/$TMUXCONFIG"
+SOURCE_TMUXCONFIG="$HOME/$TMUXCONFIG"
+echo "Create symlink for $TMUXCONFIG ..."
+if [ -h $SOURCE_TMUXCONFIG ]; then
+  echo "  symlink exists; do nothing."
+elif [ -e $SOURCE_TMUXCONFIG ]; then
+  echo "  File exists; backing it up"
+  mv $SOURCE_TMUXCONFIG $SOURCE_TMUXCONFIG.$BACKUP_EXT
+  ln -s $TARGET_TMUXCONFIG $SOURCE_TMUXCONFIG
+else
+  ln -s $TARGET_TMUXCONFIG $SOURCE_TMUXCONFIG
+fi

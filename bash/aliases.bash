@@ -18,6 +18,7 @@ alias console="sudo -u www-data php bin/console"
 alias composer5.5="php5 /usr/local/bin/composer"
 alias composer7.0="php7.0 /usr/local/bin/composer"
 alias composer7.1="php7.1 /usr/local/bin/composer"
+alias composer7.2="php7.2 /usr/local/bin/composer"
 
 alias ebash="sudo vim -O ~/.bashrc ~/my.environment/bash/aliases.bash ~/my.environment/bash/functions.bash"
 

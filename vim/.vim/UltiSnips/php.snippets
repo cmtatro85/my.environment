@@ -148,3 +148,27 @@ endsnippet
 snippet @since "Gets current date" bm
 * @since  #.#.# (`date +%Y-%m-%d`)
 endsnippet
+
+global !p
+def arguments(t):
+  if t:
+    m = re.search('function .*\((.*)\)', t)
+    if m:
+      args= m.group(1).split(',')
+      for arg in args:
+        args.append('@param '.join(arg))
+  return '\n'.join(args)
+endglobal
+
+snippet @doc "DocBlock" b
+/**
+ * ${1:${VISUAL}}
+ * $0
+ * @author Christopher Tatro <ctatro@janeiredale.com>
+ * @since  ${6:#.#.#} (${7:`date +%Y-%m-%d`})
+ *
+ * ${5:`!p snip.rv = arguments(t[1])`}
+ *
+ * @return ${4:`!p snip.rv=snip.basename`}
+ */
+endsnippet
