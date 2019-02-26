@@ -11,15 +11,7 @@ alias git-list="git status --porcelain --untracked-files=no | cut -c4- | tr '\n'
 alias resume-vim="vim -p -- $(git-list)"
 alias vim="vim -c NERDTreeToggle"
 alias evim="sudo vim -O /etc/vimrc ~/.vimrc"
-
-# PHP
-alias php="php -dzend_extension=xdebug.so"
-alias console="sudo -u www-data php bin/console"
-alias composer5.5="php5 /usr/local/bin/composer"
-alias composer7.0="php7.0 /usr/local/bin/composer"
-alias composer7.1="php7.1 /usr/local/bin/composer"
-alias composer7.2="php7.2 /usr/local/bin/composer"
-
+# bash
 alias ebash="sudo vim -O ~/.bashrc ~/my.environment/bash/aliases.bash ~/my.environment/bash/functions.bash"
 
 # Dirs
