@@ -393,7 +393,7 @@ autocmd FileType php setlocal omnifunc=phpactor#Complete
 ""     SuperTabs
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 set pumheight=30             " so the complete menu doesn't get too big
-set completeopt=menu,longest " menu, menuone, longest and preview
+set completeopt=menu,preview " menu, menuone, longest and preview
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 

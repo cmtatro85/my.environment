@@ -40,6 +40,7 @@ export PS1="\
 alias php='\
     docker run --rm --interactive --tty \
         --volume $PWD:/app \
+        -w /app \
         --user $(id -u):$(id -g) \
         --volume /etc/passwd:/etc/passwd:ro \
         --volume /etc/group:/etc/group:ro \
