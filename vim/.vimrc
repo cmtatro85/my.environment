@@ -21,7 +21,7 @@ set nocursorcolumn
 set norelativenumber
 syntax sync minlines=50
 syntax sync maxlines=100
-set synmaxcol=1000
+set synmaxcol=150
 if &term =~ "xterm\\|rxvt"
   " use an orange cursor in insert mode
   let &t_SI = "\<Esc>]12;orange\x7"
