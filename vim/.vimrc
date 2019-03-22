@@ -21,8 +21,8 @@ set nocursorcolumn
 set norelativenumber
 syntax sync minlines=50
 syntax sync maxlines=100
-set synmaxcol=150
-if &term =~ "xterm\\|rxvt"
+set synmaxcol=300
+if &term =~ "xterm-256color\\|rxvt"
   " use an orange cursor in insert mode
   let &t_SI = "\<Esc>]12;orange\x7"
   " use a red cursor otherwise
@@ -87,8 +87,7 @@ let yml_folding = 0
 let b:unaryTagsStack = 1
 
 " Show trailing spaces
-" set listchars=trail:#,eol:¬
-set listchars=trail:#
+set listchars=trail:≡ ",eol:¬
 set ffs=unix
 set encoding=utf-8
 set fileencoding=utf-8
@@ -147,16 +146,16 @@ colorscheme desert
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" COLORS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufEnter NERD_tree_* hi CursorLine cterm=BOLD ctermbg=237
+au BufEnter NERD_tree_* hi CursorLine cterm=BOLD ctermbg=DarkGray
 au BufLeave NERD_tree_* highlight clear CursorLine
 au BufAdd * highlight clear CursorLine
 " Let's change some colors and add some syntax highlighting
 "" Let's set up lines over 80 to be highlighted in a different color bg
-hi LineTooLong cterm=bold ctermbg=237
+hi LineTooLong cterm=bold ctermbg=LightGrey
 match LineTooLong /\%>80v.\+/
 
 "" Change non text lines to a lighter color
-hi NonText ctermfg=237 gui=bold guifg=237 guibg=grey30
+hi NonText ctermfg=LightGrey gui=bold guifg=LightGrey guibg=grey30
 
 "Sort PHP use statements
 ""http://stackoverflow.com/questions/11531073/how-do-you-sort-a-range-of-lines-by-length
@@ -430,13 +429,14 @@ let g:UltiSnipsEditSplit="vertical"
 
 " Overwite file types
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" SETUP FILETYPES AND SYNTAX
+"" SETUP FILETYPES AND SYNTAX AND SPACINGS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
+
 au! bufread,bufnewfile *.cpp set filetype=cpp
 au! bufread,bufnewfile *.h set filetype=cpp
 au! bufread,bufnewfile TAGS set filetype=tags
-au! BufRead,BufNewFile *.js set filetype=javascript syntax=javascript
+au! BufRead,BufNewFile *.jsx? set filetype=javascript syntax=javascript
 au! BufRead,BufNewFile *.sql set filetype=mysql
 au! FileType mysql set syntax=mysql
 au! BufNewFile,BufRead *.wiki setf Wikipedia
@@ -444,11 +444,14 @@ au! BufNewFile,BufRead *.txt setf Wikipedia
 au! BufNewFile,BufRead *.md setf Markdown
 au! BufNewFile,BufRead *.twig set syntax=htmldjango.twig
 
+au! FileType cucumber setlocal et sw=2 sts
+au! Filetype javascript setlocal expandtab softtabstop tabstop=2 shiftwidth=2
+au! Filetype make setlocal noexpandtab shiftwidth=2 tabstop=2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Spelling
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nospell
-au FileType twig,html,php,javascript,wikipedia,mysql,htmldjango.twig setlocal spell spelllang=en_us
+" au FileType twig,html,php,javascript,wikipedia,mysql,htmldjango.twig setlocal spell spelllang=en_us
 
 let g:feature_filetype='behat'
 
@@ -489,4 +492,3 @@ vmap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
 
 " Extract method from selection
 vmap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
-

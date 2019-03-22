@@ -44,23 +44,36 @@ alias php='\
         --user $(id -u):$(id -g) \
         --volume /etc/passwd:/etc/passwd:ro \
         --volume /etc/group:/etc/group:ro \
+        -w /app \
         php:7.2 php \
 '
 alias composer='\
     docker run --rm --interactive --tty \
         --memory="4g" \
-        --memory-swap="1g" \
+        --memory-swap="6g" \
         --volume $PWD:/app \
         --volume $COMPOSER_HOME:/tmp \
         --volume /tmp/cache/composer:/tmp/cache \
         --volume ~/.ssh:/root/.ssh \
         composer /usr/local/bin/php -d memory_limit=-1 /usr/bin/composer   \
 '
+alias node='\
+    docker run -it --rm \
+        --volume `pwd`:/home/node/app \
+        -w /home/node/app \
+        node:8.15-alpine  \
+'
 alias npm='\
     docker run -it --rm \
         --volume `pwd`:/home/node/app \
         -w /home/node/app \
         node:8.15-alpine npm \
+'
+alias npx='\
+    docker run -it --rm \
+        --volume `pwd`:/home/node/app \
+        -w /home/node/app \
+        node:8.15-alpine npx \
 '
 #        --user $(id -u):$(id -g) \
 #        --volume /etc/passwd:/etc/passwd:ro \
