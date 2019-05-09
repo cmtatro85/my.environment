@@ -1,0 +1,149 @@
+DATABASE_NAME = dev
+DATABASE_USERNAME = root
+DATABASE_PASSWORD = root
+
+#####################
+#- Common -#
+#####################
+
+## Removes vendor, lock, and var files; builds images; initializes the app; initializes the db.
+initialize: clear.writables clear.vendor app.env-file docker.build app.initialize docker.up db.initialize composer.install
+
+## Start project.
+start: docker.up db.initialize
+
+## Stop project.
+stop:
+        docker-compose stop
+
+## Clears the db, starts the app, install vendors and run migrations.
+refresh: docker.down docker.up db.initialize composer.install
+
+## Run all quality assurance tools (tests).
+qa: test
+
+############
+#- Docker -#
+############
+
+## Launch docker environment.
+docker.up:
+        docker-compose up -d
+        sleep 10
+
+## Down project and remove volumes (databases).
+docker.down:
+        docker-compose down -v --remove-orphans
+
+docker.build:
+        docker-compose build
+
+## Shows the output of the latest log entries
+docker.logs.show:
+        docker-compose logs
+
+## Follows the output of docker logs
+docker.logs.follow:
+        docker-compose logs -f
+
+#############
+#- Install -#
+#############
+
+## Drop, Create, and run initial database migration.
+db.initialize: db.initialize.database
+
+db.initialize.database:
+        docker-compose exec -T db mysql -u $(DATABASE_USERNAME) -p$(DATABASE_PASSWORD) -e "GRANT ALL PRIVILEGES ON $(DATABASE_NAME).* TO '$(DATABASE_USERNAME)'@'%';"
+        docker-compose exec -T db mysql -u $(DATABASE_USERNAME) -p$(DATABASE_PASSWORD) -e "DROP DATABASE IF EXISTS $(DATABASE_NAME);"
+        docker-compose exec -T db mysql -u $(DATABASE_USERNAME) -p$(DATABASE_PASSWORD) -e "CREATE DATABASE $(DATABASE_NAME);"
+        docker-compose exec -T db mysql -u $(DATABASE_USERNAME) -p$(DATABASE_PASSWORD) $(DATABASE_NAME) < dev/sql/dev.sql
+        docker-compose exec -T db mysql -u $(DATABASE_USERNAME) -p$(DATABASE_PASSWORD) $(DATABASE_NAME) < dev/sql/migrations.sql
+
+app.initialize:
+        docker-compose run app /usr/local/bin/php -d memory_limit=-1 /usr/bin/composer install --no-suggest --no-scripts -vvv
+
+## Composer install
+composer.install:
+        docker-compose exec app /usr/local/bin/php -d memory_limit=-1 /usr/bin/composer install --no-suggest -vvv
+
+## Composer update
+composer.update:
+        docker-compose exec app /usr/local/bin/php -d memory_limit=-1 /usr/bin/composer update --no-suggest -vvv
+
+##########
+#- Test -#
+##########
+
+## Run unit and behat tests
+test: phpunit behat
+
+## Run behaviour tests.
+behat:
+        docker-compose exec app /usr/local/bin/php -d memory_limit=-1 /app/vendor/bin/behat
+
+## Run unit tests.
+phpunit:
+        docker-compose exec app /usr/local/bin/php -d memory_limit=-1 /app/vendor/bin/phpunit
+
+##########
+#- Misc -#
+##########
+## Set defaut environment variables by copying env.dist file as .env.
+app.env-file:
+        cp .env.dist .env 2>/dev/null; true
+
+####################
+#- Clear commands -#
+####################
+## removes files from cache, logs, and sessions. Adds read/ write to those dirs
+clear.writables: clear.cache clear.logs clear.sessions
+        chmod ug+rw -R var/cache var/logs var/sessions 2> /dev/null; true
+
+## Clears the cache
+clear.cache:
+        rm -rf var/cache/* 2> /dev/null; true
+
+## Clears the logs
+clear.logs:
+        rm -rf var/logs/* 2> /dev/null; true
+
+## Clears the sessions
+clear.sessions:
+        rm -rf var/sessions/* 2> /dev/null; true
+
+## Removes the vendor dir and the lock file.
+clear.vendor:
+        rm -rf vendor/ 2> /dev/null; true
+
+##########
+#- Node -#
+##########
+
+## Install NPM modules
+npm.install:
+        docker run -it --rm -v `pwd`:/home/node/app -w /home/node/app node:8.15-alpine npm install
+
+## Run script start-dev
+npm.script.start-dev:
+        docker run -it --rm -v `pwd`:/home/node/app -w /home/node/app node:8.15-alpine npm run-script start:dev
+
+########
+# Code #
+########
+
+### Run codesniffer to correct violations of a defined coding project standards.
+#code_correct:
+#  docker-compose exec php bin/phpcs --standard=PSR2 src
+#
+### Run codesniffer to detect violations of a defined coding project standards.
+#code_detect:
+#  docker-compose exec php bin/phpcbf --standard=PSR2 src tests
+#
+### Run cs-fixer to fix php code to follow project standards.
+#code_fixer:
+#  docker-compose exec php bin/php-cs-fixer fix
+#
+### Run PHPStan to find errors in code.
+# ccode_static_analysis:
+# docker-compose exec php bin/phpstan analyse src --level max
